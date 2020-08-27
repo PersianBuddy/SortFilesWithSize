@@ -1,5 +1,18 @@
 import os
-# TODO: walk throgh all files in current directory
+
+# a function to make file size more readable
+def NiceFileSize(file_size):
+    suffixes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
+    suffix_index = 0
+    file_size = int(file_size)
+    if file_size < 0:
+        raise ValueError('File size must be a postive number')
+    while file_size >= 1024:
+        file_size = file_size/1024
+        suffix_index +=1
+    return f'{round(file_size,2)} {suffixes[suffix_index]}'
+
+# walk throgh all files in current directory
 files_dictionary ={}
 file_sizes = []
 for root, dirs, files in os.walk(os.path.curdir):
@@ -25,6 +38,6 @@ for fils_size_in_list in unique_file_sizes:
     for file_path, file_size_in_dictionary in files_dictionary.items():
         if fils_size_in_list == file_size_in_dictionary:
             file_name = os.path.basename(file_path)
-            sorted_file_result += f'File Name:\t{file_name}\tFile Size:\t{file_size_in_dictionary}\tFile Path:\t{os.path.abspath(file_path)}\n'
+            sorted_file_result += f'File Name:\t{file_name}\tFile Size:\t{NiceFileSize(file_size_in_dictionary)}\tFile Path:\t{os.path.abspath(file_path)}\n'
 
 print(sorted_file_result)
